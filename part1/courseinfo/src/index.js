@@ -1,31 +1,65 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { useState } from 'react'
 
-const App = () => {
-  const course = 'Half Stack application development'
-  const parts = [
-    {
-      name: 'Fundamentals of React',
-      exercises: 10
-    },
-    {
-      name: 'Using props to pass data',
-      exercises: 7
-    },
-    {
-      name: 'State of a component',
-      exercises: 14
+const History = (props) => {
+    if (props.counters.length === 0) {
+      return (
+        <h3>
+          Aun no se ha usado el contador
+        </h3>
+      )
     }
-  ]
-
-  return (
-    <div>
-      <p>{course}</p>
-      <p>{parts[0].name} {parts[0].exercises}</p>
-      <p>{parts[1].name} {parts[1].exercises}</p>
-      <p>{parts[2].name} {parts[2].exercises}</p>
-    </div>
+  
+    return (
+      <div>
+        Historial: {props.counters.join(', ')}
+      </div>
+    )
+  }
+  
+  const Button = ({ onClick, text }) => (
+    <button onClick={onClick}>
+      {text}
+    </button>
   )
+const App = () => {
+    //const [left, setLeft] = useState(0)
+    //const [right, setRight] = useState(0)
+    const [clicks, setClicks] = useState([])
+
+    const [counters, setCounters] = useState({
+        left: 0,
+        right: 0,
+    })
+
+
+    const handleClickLeft = () => {
+        setCounters({
+            ...counters,
+            left: counters.left + 1,
+        })
+        setClicks(prevClicks => ([...prevClicks, 'L']))
+    }
+    const handleClickRight = () => {
+        setCounters({
+            ...counters,
+            right: counters.right + 1,
+        })
+        setClicks(prevClicks => ([...prevClicks, 'R']))
+    }
+
+    return (
+        <div>
+            {counters.left}
+            <Button onClick={handleClickLeft} text="left"/>
+            <Button onClick={handleClickRight} text="right" />
+            {counters.right}
+            <p>Clicks totales: {clicks.length}</p>
+            <History counters={clicks} />
+        </div>
+    )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />,
+    document.getElementById('root'));
