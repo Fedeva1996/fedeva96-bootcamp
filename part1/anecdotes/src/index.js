@@ -12,9 +12,18 @@ function obtenerRandomInt(max) {
 }
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const votos = Array(anecdotes.length).fill(0)
+  const [puntos, setPuntos] = useState(votos)
+  const handleVotes = () => {
+    const copia = [...puntos]
+    copia[selected] += 1;
+    setPuntos(copia)
+  }
 
   return (
     <div>
+      <Button onClick={() => handleVotes()} text="Votar" />
+      <p>Votos:{puntos[selected]}</p>
       <Button onClick={() => setSelected(obtenerRandomInt(anecdotes.length))} text="Cambiar" />
       <p>Anecdota:{props.anecdotes[selected]}</p>
     </div>
