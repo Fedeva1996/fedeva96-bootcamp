@@ -14,18 +14,24 @@ const App = (props) => {
   const [selected, setSelected] = useState(0)
   const votos = Array(anecdotes.length).fill(0)
   const [puntos, setPuntos] = useState(votos)
+  const [maxIndex, setMaxIndex] = useState(0)
   const handleVotes = () => {
     const copia = [...puntos]
     copia[selected] += 1;
     setPuntos(copia)
+    setMaxIndex(copia.indexOf(Math.max(...copia)))
   }
 
   return (
     <div>
+      <p>Vota por las anecdotas</p>
       <Button onClick={() => handleVotes()} text="Votar" />
       <p>Votos:{puntos[selected]}</p>
       <Button onClick={() => setSelected(obtenerRandomInt(anecdotes.length))} text="Cambiar" />
       <p>Anecdota:{props.anecdotes[selected]}</p>
+      <h2>Anecdota con más votos</h2>
+      <p>{props.anecdotes[maxIndex]}</p>
+      <p>Tiene {puntos[maxIndex]} votos</p>
     </div>
   )
 }
